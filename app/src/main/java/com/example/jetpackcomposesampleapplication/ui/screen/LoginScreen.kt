@@ -1,4 +1,4 @@
-package com.example.jetpackcomposesampleapplication.ui.theme
+package com.example.jetpackcomposesampleapplication.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Button
@@ -39,25 +38,25 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lint.kotlin.metadata.Visibility
+import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.jetpackcomposesampleapplication.R
+import com.example.jetpackcomposesampleapplication.ui.theme.JetpackComposeSampleApplicationTheme
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     JetpackComposeSampleApplicationTheme {
-        LoginScreen(PaddingValues())
+       // LoginScreen(PaddingValues())
     }
 }
 
 @Composable
-fun LoginScreen(paddingValues: PaddingValues) {
+fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -126,9 +125,16 @@ fun LoginScreen(paddingValues: PaddingValues) {
             leadingIcon = {
                 Icon(Icons.Rounded.Lock, contentDescription = "Password Icon")
             },
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+
+            visualTransformation =
+                if (isPasswordVisible)
+                    VisualTransformation.None
+                else
+                    PasswordVisualTransformation(),
+
             shape = RoundedCornerShape(8.dp),
             singleLine = true,
+
             keyboardOptions = KeyboardOptions(
                 keyboardType = if (isPasswordVisible)
                     KeyboardType.Text
@@ -150,7 +156,9 @@ fun LoginScreen(paddingValues: PaddingValues) {
                 .padding(vertical = 4.dp, horizontal = 20.dp)
                 .fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                focusedTextColor = Transparent,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedIndicatorColor = Transparent,
                 unfocusedIndicatorColor = Transparent,
             )
         )
@@ -174,7 +182,13 @@ fun LoginScreen(paddingValues: PaddingValues) {
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = "Don't have an account? ")
-            Text(text = "Register", color = Color.Blue)
+            Text(text = "Register", color = Color.Blue,
+                modifier = Modifier.clickable(
+                    onClick = {
+                        navController.navigate("Registration")
+                    }
+                ))
+
 
         }
     }
